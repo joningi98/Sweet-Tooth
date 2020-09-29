@@ -1,21 +1,43 @@
 const candyService = require('./Services/candyService');
+const offerService = require('./Services/offerService');
+const pinatasService = require('./Services/pinataService');
+
 const express = require('express');
 const app = express();
 
 
+
 // ### GET ALL CANDIES ###
 // (10%) /api/candies - Gets all candies within the application
-app.get('/api/candies', async function(req,res){
-    const candies = await candyService.getAllCandies();
+app.get('/api/candies', function(req,res){
+    const candies = candyService.getAllCandies();
     return res.status(200).json(candies);
 });
 
+
+app.get('/api/candies/:id', function(req,res){
+    const candyId = req.params.id;
+    const specificCandy = candyService.getCandieById(candyId);
+    return res.status(200).json(specificCandy);
+});
+
+
+app.post('/api/candies', function(req, res){
+    const newCandy = candyService.CreateNewCandy(req.body);
+    console.log(req.body, "req.body!!")
+
+    console.log(newCandy, "<---------");
+    //if (newCandy.length !== 2){
+     //   res.status(400).json({success: false, error: 'Sorry, error'});
+    //}
+    return res.status(201).json(newCandy);
+});
 // ### POST CANDIES ###
 /*
 /api/candies - Creates a new candy (NO MODEL VALIDATION) and should return
 the newly created model along with a proper status code
 */
-app.post('/api/candies', async function(req,res){
+app.post('/api/candies', function(req,res){
 
 });
 
@@ -30,8 +52,9 @@ app.get('/api/candies:id', async function(req,res){
 (10%) /api/offers - Gets all offers within the application and the output should include the
 nested candies within the offer object as seen in the Model Structure section
  */
-app.get('/api/offers', async function(req,res){
-
+app.get('/api/offers', function(req,res){
+    const offers = offerService.getAllOffers();
+    return res.status(200).json(offers);
 });
 
 // ### GET PINATAS ###
@@ -39,8 +62,9 @@ app.get('/api/offers', async function(req,res){
 (10%) /api/pinatas - Gets all pinatas within the application - should contain all properties
 excluding surprise
  */
-app.get('/api/pinatas', async function(req,res){
-
+app.get('/api/pinatas', function(req,res){
+    const pinatas = pinatasService.getAllPinatas();
+    return res.status(200).json(pinatas);
 });
 
 // ### GET PINATA BY ID ###
@@ -48,8 +72,10 @@ app.get('/api/pinatas', async function(req,res){
 (10%) /api/pinatas/{id} - Gets a pinata with a certain id - should contain all properties
 excluding surprise
  */
-app.get('/api/pinatas:id', async function(req, res){
-
+app.get('/api/pinatas/:id', async function(req, res){
+    const pinatasId = req.params.id;
+    const specificPinata = pinatasService.getPinatasById(pinatasId);
+    return res.status(200).json(specificPinata);
 });
 
 // ### POST PINATA ###
@@ -85,5 +111,5 @@ app.put('/api/pinatas:id/hit', async function(req, res){
 });
 
 app.listen(3000, () => {
-    console.log(`Service is listening on port 300`);
+    console.log(`Service is listening on port 3000`);
 })
