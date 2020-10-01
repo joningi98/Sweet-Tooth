@@ -3,6 +3,7 @@ const offerService = require('./Services/offerService');
 const pinatasService = require('./Services/pinataService');
 const bodyParser = require('body-parser');
 const express = require('express');
+const request = require('reqeust');
 const fs = require('fs');
 const app = express();
 
@@ -56,8 +57,12 @@ app.get('/api/offers', function(req,res){
 excluding surprise
  */
 app.get('/api/pinatas', function(req,res){
-    const pinatas = pinatasService.getAllPinatas();
-    return res.status(200).json(pinatas);
+    let AllPinatas = pinatasService.getAllPinatas();
+    function getClientPinata(pinata){
+        return JSON.parse(JSON.stringify({...pinata, 'surprise': undefined}));
+    }
+    AllPinatas = AllPinatas.map(getClientPinata)
+    return res.status(200).json(AllPinatas);
 });
 
 // ### GET PINATA BY ID ###
@@ -101,6 +106,13 @@ single time)
       called images/ which should be in the root folder.
       • If the hit limit has been reached the endpoint should return a status code 423 (Locked)
  */
+const download = (url, path, callback) => {
+    request.head(url, (err, res, body) => {
+        request(url)
+            .pipe(fs.createWriteStream(path))
+            .on('close', callback)
+    })
+}
 
 app.put('/api/pinatas/:id/hit', function(req, res){
     const pinataId = req.params.id;
@@ -113,6 +125,10 @@ app.put('/api/pinatas/:id/hit', function(req, res){
         } else {
             try {
                 new URL(hit);
+                console.log("downloading")
+                download(hit, `./images/${hit}.png`, () => {
+                    console.log('Done!');
+                });
             } catch (_) {
                 fs.appendFile('surprises.txt', hit + "\n", (err) => {
                     if (err) throw err;
@@ -122,8 +138,6 @@ app.put('/api/pinatas/:id/hit', function(req, res){
         }
     }
 });
-
-app.get('/')
 
 app.listen(3000, () => {
     console.log(`Service is listening on port 3000`);
