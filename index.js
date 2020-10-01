@@ -15,14 +15,19 @@ app.get('/api/candies', function(req,res){
     return res.status(200).json(candies);
 });
 
-
+// ### GET CANDIES WITH ID ###
+// (10%) /api/candies/{id} - Gets a candy with a certain id
 app.get('/api/candies/:id', function(req,res){
     const candyId = req.params.id;
     const specificCandy = candyService.getCandieById(candyId);
     return res.status(200).json(specificCandy);
 });
 
-
+// ### POST CANDIES ###
+/*
+/api/candies - Creates a new candy (NO MODEL VALIDATION) and should return
+the newly created model along with a proper status code
+*/
 app.post('/api/candies', function(req, res){
     console.log(req.body, "req.body!!")
 
@@ -32,20 +37,6 @@ app.post('/api/candies', function(req, res){
      //   res.status(400).json({success: false, error: 'Sorry, error'});
     //}
     return res.status(201).json(newCandy);
-});
-// ### POST CANDIES ###
-/*
-/api/candies - Creates a new candy (NO MODEL VALIDATION) and should return
-the newly created model along with a proper status code
-*/
-app.post('/api/candies', function(req,res){
-
-});
-
-// ### GET CANDIES WITH ID ###
-// (10%) /api/candies/{id} - Gets a candy with a certain id
-app.get('/api/candies:id', async function(req,res){
-
 });
 
 // ### GET OFFERS ###
