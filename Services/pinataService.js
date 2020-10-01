@@ -3,9 +3,9 @@ const pinatasDb = require('../Data/database').pinatas;
 const offerService = () => {
 
     const pinataMinimumInfo = (pinata) => {
-        const currentHits = pinata.currentHits = pinata.currentHits | 0;
-        return {"id": pinata.id, "name": pinata.name, "maximumHits": pinata.maximumHits, "currentHits": currentHits};
-    }
+        pinata.currentHits = pinata.currentHits | 0;
+        return pinata
+    };
 
     const getAllPinatas = () => {
         const pinatas = pinatasDb;
@@ -15,7 +15,6 @@ const offerService = () => {
         });
         return tempPinataArray;
     };
-
 
     const getPinatasById = (id) => {
         const pinata = pinatasDb.find(item => item.id === Number(id));
@@ -35,7 +34,7 @@ const offerService = () => {
             "currentHits": 0
         };
 
-        pinatasDb.pinatas.push(tempPinata);
+        pinatasDb.push(tempPinata);
         return pinataMinimumInfo(tempPinata);
     };
 
