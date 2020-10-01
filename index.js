@@ -99,10 +99,18 @@ single time)
       called images/ which should be in the root folder.
       • If the hit limit has been reached the endpoint should return a status code 423 (Locked)
  */
-app.put('/api/pinatas:id/hit', async function(req, res){
+app.put('/api/pinatas:id/hit', function(req, res){
+    const specificPinata = req.params.id;
+    const hit = pinatasService.hitPinata(specificPinata);
+    if (hit === true) {
+        return res.status(200).json(specificPinata.currentHits)
+    }
+    else {
+        return res.status(204).json(pinatasService.addCurrentHits(specificPinata))
+    }
 
 });
 
 app.listen(3000, () => {
     console.log(`Service is listening on port 3000`);
-})
+});

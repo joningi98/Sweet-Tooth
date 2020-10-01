@@ -12,7 +12,7 @@ const offerService = () => {
         const tempPinataArray = [];
         pinatas.forEach(function (pinata){
             tempPinataArray.push(pinataMinimumInfo(pinata));
-        })
+        });
         return tempPinataArray;
     };
 
@@ -34,25 +34,29 @@ const offerService = () => {
             "surprise": pinata.surprise,
             "maximumHits": pinata.maximumHits,
             "currentHits": 0
-        }
+        };
+
         pinatasDb.pinatas.push(tempPinata);
         return pinataMinimumInfo(tempPinata);
     };
 
+    const addCurrentHits = (id) => {
+        const specificPinata = getPinatasById(id);
+        specificPinata.currentHits += 1
+
+    };
+
     const hitPinata = (id) => {
         const pinata = getPinatasById(id);
-
-        if (pinata.currentHits + 1 === pinata.maximumHits) {
-            return pinata.surprise;
-        } else {
-            return null;
-        }
+        return pinata.currentHits + 1 === pinata.maximumHits;
     };
 
     return {
         getAllPinatas,
         getPinatasById,
-        createNewPinata
+        createNewPinata,
+        hitPinata,
+        addCurrentHits
     }
 };
 
