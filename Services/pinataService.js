@@ -41,14 +41,29 @@ const offerService = () => {
     };
 
     const addCurrentHits = (id) => {
-        const specificPinata = getPinatasById(id);
-        specificPinata.currentHits += 1
-
+        const pinataIx = pinatasDb.pinatas.findIndex((obj => obj.id === Number(id)));
+        const pinata = pinatasDb.pinatas[pinataIx];
+        if (pinata.currentHits === null) {
+            pinata.currentHits = Number(0);
+        }
+        pinata.currentHits += Number(pinata.currentHits + 1);
+        console.log(pinatasDb.pinatas);
     };
+
 
     const hitPinata = (id) => {
         const pinata = getPinatasById(id);
-        return pinata.currentHits + 1 === pinata.maximumHits;
+        if (pinata.currentHits == pinata.maximumHits) {
+            return false
+        } else {
+            addCurrentHits(id);
+            if (pinata.currentHits == pinata.maximumHits) {
+                return pinata.surprise;
+            }
+            else {
+                return true;
+            }
+        }
     };
 
     return {
