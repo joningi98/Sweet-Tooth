@@ -78,7 +78,8 @@ surprise property which can either be a written text or an URL to a valid image 
 etc.)
  */
 app.post('/api/pinatas', async function(req, res){
-
+    const newPinata = pinatasService.createNewPinata(req.body);
+    return res.status(201).json(newPinata);
 });
 
 
