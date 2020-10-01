@@ -1,18 +1,17 @@
-const candyDb = require('../Data/database');
+const candyDb = require('../Data/database').candies;
 
 const candyService = () => {
 
     const getAllCandies = () => {
-        return candyDb.candies
+        return candyDb
     };
 
     const getCandieById = (id) => {
-        return candyDb.candies.filter(item => item.id === Number(id))
+        return candyDb.filter(item => item.id === Number(id))
     };
 
     const findNewId = () => {
-        const candies = candyDb.candies;
-        return Math.max.apply(Math, candies.map(function(candy) { return candy.id; })) + 1;
+        return Math.max.apply(Math, candyDb.map(function(candy) { return candy.id; })) + 1;
     };
 
     const CreateNewCandy = (temp_json) => {
@@ -20,7 +19,7 @@ const candyService = () => {
             "id": findNewId(),
             "name": temp_json.name,
             "description": temp_json.description};
-        return candyDb.candies.push(newCandy);
+        return candyDb.push(newCandy);
     };
 
     return {

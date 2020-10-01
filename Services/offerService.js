@@ -1,4 +1,4 @@
-const offerDb = require('../Data/data.json');
+const offerDb = require('../Data/database').offers;
 const candyService = require('./candyService');
 
 const offerService = () => {
