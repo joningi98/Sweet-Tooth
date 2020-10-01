@@ -103,7 +103,7 @@ app.put('/api/pinatas/:id/hit', function(req, res){
     const pinataId = req.params.id;
     const hit = pinatasService.hitPinata(pinataId);
     if (hit === false) {
-        return res.status(402).send();
+        return res.status(423).send();
     } else {
         if (hit === true) {
             return res.status(204).send();

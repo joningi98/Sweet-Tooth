@@ -3,7 +3,7 @@ const pinatasDb = require('../Data/data.json').pinatas;
 const offerService = () => {
 
     const pinataMinimumInfo = (pinata) => {
-        const currentHits = pinata.currentHits ? undefined : 0;
+        const currentHits = pinata.currentHits ? (undefined | null) : 0;
         return {"id": pinata.id, "name": pinata.name, "maximumHits": pinata.maximumHits, "currentHits": currentHits};
     }
 
@@ -50,7 +50,7 @@ const offerService = () => {
             }
         });
     };
-    
+
     const hitPinata = (id) => {
         const pinata = pinatasDb.find(item => item.id === Number(id));
         if (pinata.currentHits === pinata.maximumHits) {
