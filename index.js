@@ -1,11 +1,12 @@
 const candyService = require('./Services/candyService');
 const offerService = require('./Services/offerService');
 const pinatasService = require('./Services/pinataService');
-
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
-
+// Using body parser
+app.use(bodyParser.json());
 
 // ### GET ALL CANDIES ###
 // (10%) /api/candies - Gets all candies within the application
@@ -23,9 +24,9 @@ app.get('/api/candies/:id', function(req,res){
 
 
 app.post('/api/candies', function(req, res){
-    const newCandy = candyService.CreateNewCandy(req.body);
     console.log(req.body, "req.body!!")
 
+    const newCandy = candyService.CreateNewCandy(req.body);
     console.log(newCandy, "<---------");
     //if (newCandy.length !== 2){
      //   res.status(400).json({success: false, error: 'Sorry, error'});
