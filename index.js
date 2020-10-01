@@ -102,9 +102,16 @@ single time)
 app.put('/api/pinatas/:id/hit', function(req, res){
     const pinataId = req.params.id;
     const hit = pinatasService.hitPinata(pinataId);
-    if (hit === true) {
-        return res.status(200).send();
+    if (hit === false) {
+        return res.status(402).send();
+    } else {
+        if (hit === true) {
+            return res.status(204).send();
+        } else {
+            return res.status(200).json(hit);
+        }
     }
+
 
 });
 

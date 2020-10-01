@@ -1,4 +1,4 @@
-const pinatasDb = require('../Data/data.json');
+const pinatasDb = require('../Data/data.json').pinatas;
 
 const offerService = () => {
 
@@ -8,7 +8,7 @@ const offerService = () => {
     }
 
     const getAllPinatas = () => {
-        const pinatas = pinatasDb.pinatas;
+        const pinatas = pinatasDb;
         const tempPinataArray = [];
         pinatas.forEach(function (pinata){
             tempPinataArray.push(pinataMinimumInfo(pinata));
@@ -18,13 +18,12 @@ const offerService = () => {
 
 
     const getPinatasById = (id) => {
-        const pinata = pinatasDb.pinatas.find(item => item.id === Number(id));
+        const pinata = pinatasDb.find(item => item.id === Number(id));
         return pinataMinimumInfo(pinata);
     };
 
     const findNewId = () => {
-        const pinatas = pinatasDb.pinatas;
-        return Math.max.apply(Math, pinatas.map(function(pinata) { return pinata.id; })) + 1;
+        return Math.max.apply(Math, pinatasDb.map(function(pinata) { return pinata.id; })) + 1;
     };
 
     const createNewPinata = (pinata) => {
@@ -41,23 +40,24 @@ const offerService = () => {
     };
 
     const addCurrentHits = (id) => {
-        const pinataIx = pinatasDb.pinatas.findIndex((obj => obj.id === Number(id)));
-        const pinata = pinatasDb.pinatas[pinataIx];
-        if (pinata.currentHits === null) {
-            pinata.currentHits = Number(0);
-        }
-        pinata.currentHits += Number(pinata.currentHits + 1);
-        console.log(pinatasDb.pinatas);
+        pinatasDb.forEach(function (pinata){
+            if (pinata.id === Number(id)){
+                if (pinata.currentHits === undefined){
+                    pinata.currentHits = 1;
+                } else {
+                    pinata.currentHits += 1;
+                }
+            }
+        });
     };
-
-
+    
     const hitPinata = (id) => {
-        const pinata = getPinatasById(id);
-        if (pinata.currentHits == pinata.maximumHits) {
+        const pinata = pinatasDb.find(item => item.id === Number(id));
+        if (pinata.currentHits === pinata.maximumHits) {
             return false
         } else {
             addCurrentHits(id);
-            if (pinata.currentHits == pinata.maximumHits) {
+            if (pinata.currentHits === pinata.maximumHits) {
                 return pinata.surprise;
             }
             else {
