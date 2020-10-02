@@ -32,12 +32,7 @@ the newly created model along with a proper status code
 */
 app.post('/api/candies', function(req, res){
     console.log(req.body, "req.body!!")
-
     const newCandy = candyService.CreateNewCandy(req.body);
-    console.log(newCandy, "<---------");
-    //if (newCandy.length !== 2){
-     //   res.status(400).json({success: false, error: 'Sorry, error'});
-    //}
     return res.status(201).json(newCandy);
 });
 
@@ -73,6 +68,9 @@ excluding surprise
 app.get('/api/pinatas/:id', async function(req, res){
     const pinatasId = req.params.id;
     const specificPinata = pinatasService.getPinatasById(pinatasId);
+    if (specificPinata === false) {
+        return res.status(404).send();
+    }
     const retPinata = JSON.parse(JSON.stringify({...specificPinata, 'surprise': undefined}))
     return res.status(200).json(retPinata)
 });
@@ -115,7 +113,7 @@ const download = (url, path, callback) => {
 app.put('/api/pinatas/:id/hit', function(req, res){
     const pinataId = req.params.id;
     const hit = pinatasService.hitPinata(pinataId);
-    const specificPinata = pinatasService.getPinatasById(pinataId);
+    const pinata = pinatasService.getPinatasById(pinataId);
     if (hit === false) {
         return res.status(423).send();
     } else {
@@ -124,14 +122,10 @@ app.put('/api/pinatas/:id/hit', function(req, res){
         } else {
             try {
                 new URL(hit);
-
-                console.log("downloading");
-                download(hit, `./images/${specificPinata.name}.png`, () => {
-                    console.log('Done!');
+                download(hit, `./images/${pinata.name}.png`, () => {
                 });
             } catch (_) {
                 fs.appendFile('surprises.txt', hit + "\n", (err) => {
-                    console.log(hit);
                     if (err) throw err;
                 });
             }

@@ -18,8 +18,10 @@ const candyService = () => {
         const newCandy = {
             "id": findNewId(),
             "name": temp_json.name,
-            "description": temp_json.description};
-        return candyDb.push(newCandy);
+            "description": temp_json.description
+        };
+        candyDb.push(newCandy);
+        return newCandy;
     };
 
     return {

@@ -18,7 +18,11 @@ const offerService = () => {
 
     const getPinatasById = (id) => {
         const pinata = pinatasDb.find(item => item.id === Number(id));
-        return pinataMinimumInfo(pinata);
+        if (pinata === undefined) {
+            return false;
+        } else {
+            return pinataMinimumInfo(pinata);
+        }
     };
 
     const findNewId = () => {
