@@ -42,6 +42,7 @@
         {
             "id": 1,
             "name": "Wheaty",
+
             "surprise": "5 kg of Z&Zs!",
             "maximumHits": 5
         },
@@ -50,6 +51,12 @@
             "name": "Snappy",
             "surprise": "Two meters of Brix!",
             "maximumHits": 10
+        },
+        {
+            "id": 3,
+            "name": "Stuffy",
+            "surprise": "https://img.freepik.com/free-vector/mexican-pinata-horse-with-candy_97231-85.jpg?size=626&ext=jpg",
+            "maximumHits": 5
         }
     ]
 }

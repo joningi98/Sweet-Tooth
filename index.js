@@ -108,15 +108,14 @@ single time)
  */
 const download = (url, path, callback) => {
     request.head(url, (err, res, body) => {
-        request(url)
-            .pipe(fs.createWriteStream(path))
-            .on('close', callback)
+        request(url).pipe(fs.createWriteStream(path)).on('close', callback)
     })
 }
 
 app.put('/api/pinatas/:id/hit', function(req, res){
     const pinataId = req.params.id;
     const hit = pinatasService.hitPinata(pinataId);
+    const specificPinata = pinatasService.getPinatasById(pinataId);
     if (hit === false) {
         return res.status(423).send();
     } else {
@@ -125,12 +124,14 @@ app.put('/api/pinatas/:id/hit', function(req, res){
         } else {
             try {
                 new URL(hit);
-                console.log("downloading")
-                download(hit, `./images/${hit}.png`, () => {
+
+                console.log("downloading");
+                download(hit, `./images/${specificPinata.name}.png`, () => {
                     console.log('Done!');
                 });
             } catch (_) {
                 fs.appendFile('surprises.txt', hit + "\n", (err) => {
+                    console.log(hit);
                     if (err) throw err;
                 });
             }

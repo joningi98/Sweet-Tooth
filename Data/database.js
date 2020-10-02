@@ -12,6 +12,6 @@ const database = () => {
         offers,
         pinatas
     }
-}
+};
 
 module.exports = database();
